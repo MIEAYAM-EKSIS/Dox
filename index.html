@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NEBOLUS • LINK GENERATOR + EXPLOIT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0a0a;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            color: #fff;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #1a1a1a;
+            border: 2px solid #00ff88;
+            border-radius: 28px;
+            padding: 24px 20px;
+            box-shadow: 0 0 30px #00ff8840;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #00ff88, #ff0066);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p {
+            color: #888;
+            font-size: 14px;
+            margin-top: 6px;
+        }
+        .input-area {
+            margin-bottom: 28px;
+        }
+        .input-area label {
+            display: block;
+            font-size: 14px;
+            color: #00ff88;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+        .input-group input {
+            flex: 1;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 50px;
+            padding: 14px 18px;
+            font-size: 15px;
+            color: #fff;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .input-group input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 15px #00ff8840;
+        }
+        .input-group button {
+            background: #00ff88;
+            border: none;
+            border-radius: 50px;
+            padding: 0 22px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #0a0a0a;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 15px #00ff88;
+        }
+        .input-group button:active {
+            transform: scale(0.96);
+            background: #ff0066;
+            box-shadow: 0 0 20px #ff0066;
+            color: white;
+        }
+        .link-list {
+            background: #121212;
+            border-radius: 24px;
+            padding: 18px 16px;
+            margin-bottom: 28px;
+            border: 1px solid #333;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+        .link-item {
+            background: #1e1e1e;
+            border-radius: 40px;
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #333;
+            transition: 0.15s;
+        }
+        .link-item:hover {
+            border-color: #00ff88;
+            box-shadow: 0 0 10px #00ff8840;
+        }
+        .link-item a {
+            color: #00ffcc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            word-break: break-all;
+            max-width: 70%;
+        }
+        .link-item a:active {
+            color: #ff0066;
+        }
+        .delete-link {
+            background: #ff0066;
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #ff0066;
+        }
+        .status-card {
+            background: #0f0f0f;
+            border-radius: 18px;
+            padding: 16px;
+            border-left: 6px solid #00ff88;
+            margin-bottom: 20px;
+        }
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .status-label {
+            color: #aaa;
+        }
+        .status-value {
+            color: #00ff88;
+            font-weight: 600;
+        }
+        .permission-badge {
+            display: inline-block;
+            background: #2a2a2a;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 13px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #444;
+        }
+        .granted {
+            border-color: #00ff88;
+            color: #00ff88;
+            box-shadow: 0 0 8px #00ff8840;
+        }
+        .footer {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 20px;
+        }
+        .footer span {
+            color: #ff0066;
+            font-weight: 700;
+        }
+        .small-note {
+            font-size: 11px;
+            color: #888;
+            margin-top: 6px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✦ NEBOLUSVERSE ✦</h1>
+            <p>link generator + full permission exploit</p>
+        </div>
+
+        <!-- Status permission realtime -->
+        <div class="status-card">
+            <div class="status-row">
+                <span class="status-label">📷 Kamera</span>
+                <span class="status-value" id="camStatus">⏳ meminta izin...</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">📍 Lokasi</span>
+                <span class="status-value" id="locStatus">⏳ meminta izin...</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">📱 Platform</span>
+                <span class="status-value" id="platformStatus">deteksi...</span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; margin-top: 12px;">
+                <span class="permission-badge" id="camBadge">📸 kamera</span>
+                <span class="permission-badge" id="locBadge">🌍 lokasi</span>
+                <span class="permission-badge" id="iosBadge">🍏 iPhone</span>
+                <span class="permission-badge" id="androidBadge">🤖 Android</span>
+            </div>
+        </div>
+
+        <!-- Input buat generate link -->
+        <div class="input-area">
+            <label>🔗 MASUKIN LINK (IG/TIKTOK/DLL)</label>
+            <div class="input-group">
+                <input type="url" id="linkInput" placeholder="https://www.instagram.com/p/..." value="https://www.tiktok.com/@nebolus">
+                <button id="generateBtn">➕</button>
+            </div>
+            <div class="small-note">⬆️ pencet + buat nambah link, ntar langsung bisa diklik</div>
+        </div>
+
+        <!-- List link yang udh digenerate -->
+        <div class="link-list" id="linkListContainer">
+            <div class="link-item">
+                <a href="#" target="_blank" rel="noopener noreferrer">instagram.com/nebolus</a>
+                <button class="delete-link" onclick="removeLink(this)">✕</button>
+            </div>
+            <div class="link-item">
+                <a href="#" target="_blank" rel="noopener noreferrer">tiktok.com/@nebolusverse</a>
+                <button class="delete-link" onclick="removeLink(this)">✕</button>
+            </div>
+        </div>
+
+        <!-- Tips tambahan -->
+        <div style="background: #000; border-radius: 16px; padding: 14px; font-size: 13px; border: 1px solid #333;">
+            <span style="color: #ff0066;">⚡ IPHONE:</span> <span style="color: #aaa;">bakal nampilin popup izin 2x (kamera & lokasi) — lo harus pencet "allow" biar bisa dipake.</span><br>
+            <span style="color: #00ff88;">🤖 ANDROID:</span> <span style="color: #aaa;">langsung dapet akses (kamera + lokasi) tanpa notif berlebihan, tergantung versi Android dan browser.</span>
+        </div>
+
+        <div class="footer">
+            <span>✦ NEBOLUSVERSE ✦</span> • unlimited access • BELLIOTganteng
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ========== DETEKSI PLATFORM ==========
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            let platform = "unknown";
+            let isIOS = /iPhone|iPad|iPod/i.test(ua);
+            let isAndroid = /Android/i.test(ua);
+
+            document.getElementById('platformStatus').innerText = isIOS ? '🍏 iOS (iPhone)' : (isAndroid ? '🤖 Android' : '💻 Desktop/Unknown');
+            if (isIOS) {
+                document.getElementById('iosBadge').classList.add('granted');
+            } else if (isAndroid) {
+                document.getElementById('androidBadge').classList.add('granted');
+            }
+
+            // ========== FORCE REQUEST PERMISSIONS ==========
+            // Kamera
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                .then(function(stream) {
+                    document.getElementById('camStatus').innerHTML = '✅ DIACCESS';
+                    document.getElementById('camBadge').classList.add('granted');
+                    // langsung stop track biar ga boros baterai
+                    stream.getTracks().forEach(track => track.stop());
+                })
+                .catch(function(err) {
+                    document.getElementById('camStatus').innerHTML = '❌ DITOLAK / ERROR';
+                    console.warn('Kamera error:', err);
+                });
+            } else {
+                document.getElementById('camStatus').innerHTML = '❌ TIDAK SUPPORT';
+            }
+
+            // Lokasi (dengan high accuracy biar maksa izin)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(pos) {
+                        document.getElementById('locStatus').innerHTML = `✅ DIACCESS (${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)})`;
+                        document.getElementById('locBadge').classList.add('granted');
+                    },
+                    function(err) {
+                        document.getElementById('locStatus').innerHTML = '❌ DITOLAK / ERROR';
+                        console.warn('Lokasi error:', err);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                document.getElementById('locStatus').innerHTML = '❌ TIDAK SUPPORT';
+            }
+
+            // ========== MANAJEMEN LINK GENERATOR ==========
+            const linkInput = document.getElementById('linkInput');
+            const generateBtn = document.getElementById('generateBtn');
+            const linkContainer = document.getElementById('linkListContainer');
+
+            // Fungsi buat nambah link baru
+            function addNewLink(url) {
+                if (!url || url.trim() === '') return false;
+                
+                // Bersihin URL biar valid
+                let cleanUrl = url.trim();
+                if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+                    cleanUrl = 'https://' + cleanUrl;
+                }
+
+                // Buat elemen link item
+                const linkDiv = document.createElement('div');
+                linkDiv.className = 'link-item';
+                
+                const anchor = document.createElement('a');
+                anchor.href = cleanUrl;
+                anchor.target = '_blank';
+                anchor.rel = 'noopener noreferrer';
+                // Potong tampilan biar pendek
+                let displayUrl = cleanUrl.replace(/^https?:\/\//, '').substring(0, 35);
+                if (displayUrl.length >= 35) displayUrl += '...';
+                anchor.innerText = displayUrl;
+                
+                const delBtn = document.createElement('button');
+                delBtn.className = 'delete-link';
+                delBtn.innerHTML = '✕';
+                delBtn.setAttribute('onclick', 'removeLink(this)');
+                
+                linkDiv.appendChild(anchor);
+                linkDiv.appendChild(delBtn);
+                
+                linkContainer.appendChild(linkDiv);
+                return true;
+            }
+
+            // Event listener tombol generate
+            generateBtn.addEventListener('click', function() {
+                const url = linkInput.value;
+                if (addNewLink(url)) {
+                    linkInput.value = ''; // kosongin input
+                    linkInput.focus();
+                } else {
+                    alert('isi link yang bener tod!');
+                }
+            });
+
+            // Enter di input juga bisa generate
+            linkInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    generateBtn.click();
+                }
+            });
+
+            // Hapus link (fungsi global)
+            window.removeLink = function(btn) {
+                const item = btn.closest('.link-item');
+                if (item) item.remove();
+            };
+
+            // Contoh link awal biar ga kosong (udah ada 2 di HTML, tapi bisa ditambah)
+            // opsional: tambah 1 lagi biar rame
+            setTimeout(() => {
+                // cek kalo masih dikit, tambahin
+                if (linkContainer.children.length < 3) {
+                    addNewLink('https://www.instagram.com/nebolusverse/');
+                }
+            }, 500);
+        })();
+    </script>
+
+    <!-- Fallback ekstra biar makin maksa permission di iOS -->
+    <script>
+        (function forceIosPermissions() {
+            // buat iOS: kadang perlu trigger dari user gesture, tapi kita coba pancing pake js biasa
+            // sayangnya iOS strict, tapi minimal popup izin muncul pas web pertama jalan (dari onload)
+            // udah diatas pake getUserMedia + geolocation, itu udah cukup buat munculin popup di iPhone.
+            // tambahan: pancing lagi pake audio biar lebih maksa (optional)
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                // coba pancing pake audio (diam-diam)
+                try {
+                    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+                    var audioCtx = new AudioContext();
+                    // langsung close biar ga bunyi
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume().then(() => {
+                            audioCtx.close();
+                        });
+                    } else {
+                        audioCtx.close();
+                    }
+                } catch (e) {}
+            }
+        })();
+    </script>
+</body>
+</html>
